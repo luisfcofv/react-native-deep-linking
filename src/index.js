@@ -95,4 +95,5 @@ const handleUrl = ({ url }) => {
   });
 };
 
-export default { handleUrl, addRoute, addScheme };
+const DeepLinking = { handleUrl, addRoute, addScheme };
+export default DeepLinking;
