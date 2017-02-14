@@ -6,12 +6,10 @@ notifications:
   email: false
 node_js:
   - '7'
-  - '6'
-  - '4'
 script:
   - yarn test
 after_success:
-  - npm run semantic-release
+  - yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
