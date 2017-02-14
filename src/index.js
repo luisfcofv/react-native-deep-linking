@@ -59,6 +59,7 @@ const evaluateExpression = (expression, path, scheme) => {
 
   if (typeof expression === 'string' && expression.includes(':')) {
      // "/path/:id" || "/path/:id/*"
+     console.log(expression);
     return evaluateRoute(expression, path) || evaluateRouteWithPath(expression, path);
   }
 
@@ -95,5 +96,5 @@ const handleUrl = ({ url }) => {
   });
 };
 
-const DeepLinking = { handleUrl, addRoute, addScheme };
+const DeepLinking = { handleUrl, addRoute, addScheme, evaluateUrl };
 export default DeepLinking;
