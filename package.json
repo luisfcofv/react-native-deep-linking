@@ -7,7 +7,6 @@
     "test": "test"
   },
   "scripts": {
-    "precommit": "yarn test",
     "prepush": "yarn test",
     "commit": "git-cz ",
     "test": "jest",
