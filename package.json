@@ -34,6 +34,7 @@
   "devDependencies": {
     "babel-jest": "^18.0.0",
     "babel-preset-react-native": "^1.9.0",
+    "codecov.io": "^0.1.6",
     "commitizen": "^2.9.5",
     "cz-conventional-changelog": "^1.2.0",
     "husky": "^0.13.1",
