@@ -1,43 +1,49 @@
 import { Linking } from 'react-native';
 
 const schemes = [];
-const routes = [];
+let routes = [];
 
-const evaluateRegex = (expression, path, query) => {
-  const regexString = expression.replace(query, '(.*)');
-  const regex = new RegExp(regexString, 'g');
-  const match = regex.exec(path);
+const fetchQueries = (expression) => {
+  const regex = /:([^\/]*)/g;
+  const queries = [];
 
-  if (match) {
-    const regexPath = match[0];
-    const regexQuery = match[1];
-    if (regexPath === path && regexQuery && !regexQuery.includes('/')) {
-      const id = query.replace(':', '');
-      return { path, [id]: match[1] };
+  let match;
+  while (match = regex.exec(expression)) {
+    if (match && match[0]) {
+      queries.push(match[0]);
     }
   }
 
-  return false;
-};
+  return queries;
+}
 
-const evaluateRouteWithPath = (expression, path) => {
-  // "/path/:id/other"
-  const match = /.*\/(:.*)\/.*/g.exec(expression);
+const execRegex = (queries, expression, path) => {
+  let regexExpression = expression;
+  queries.forEach((query) => {
+    regexExpression = regexExpression.replace(query, '(.*)');
+  });
 
-  if (match && match[1]) {
-    return evaluateRegex(expression, path, match[1]);
+  const queryRegex = new RegExp(regexExpression, 'g');
+  const match = queryRegex.exec(path);
+
+  if (match) {
+    let results = { path: match[0] }
+    queries.forEach((query, index) => {
+      const id = query.substring(1);
+      results = { [id]: match[index + 1], ...results }
+    });
+
+    return results;
   }
 
   return false;
 };
 
 const evaluateRoute = (expression, path) => {
-  // "/path/:id"
-  const index = expression.lastIndexOf(':');
-  const query = expression.substring(index);
+  const queries = fetchQueries(expression);
 
-  if (!query.includes('/')) {
-    return evaluateRegex(expression, path, query);
+  if (queries.length) {
+    return execRegex(queries, expression, path);
   }
 
   return false;
@@ -50,7 +56,7 @@ const evaluateExpression = (expression, path, scheme) => {
 
   try {
     const match = expression.exec(path);
-    if (match && match[1]) {
+    if (match) {
       return { scheme, path, match };
     }
   } catch (e) {
@@ -58,15 +64,13 @@ const evaluateExpression = (expression, path, scheme) => {
   }
 
   if (typeof expression === 'string' && expression.includes(':')) {
-     // "/path/:id" || "/path/:id/*"
-     console.log(expression);
-    return evaluateRoute(expression, path) || evaluateRouteWithPath(expression, path);
+    return evaluateRoute(expression, path);
   }
 
   return false;
 };
 
-const evaluateUrl = (url) => {
+export const evaluateUrl = (url) => {
   schemes.forEach((scheme) => {
     if (url.startsWith(scheme)) {
       const path = url.substring(scheme.length - 1);
@@ -84,6 +88,15 @@ const addRoute = (expression, callback) => {
   routes.push({ expression, callback });
 };
 
+const removeRoute = (expression) => {
+  const index = routes.findIndex(route => route.expression === expression);
+  routes.splice(index, 1);
+};
+
+const resetRoutes = () => {
+  routes.splice(0, routes.length);
+};
+
 const addScheme = (scheme) => {
   schemes.push(scheme);
 };
@@ -96,5 +109,13 @@ const handleUrl = ({ url }) => {
   });
 };
 
-const DeepLinking = { handleUrl, addRoute, addScheme, evaluateUrl };
+const DeepLinking = {
+  addRoute,
+  addScheme,
+  handleUrl,
+  removeRoute,
+  resetRoutes,
+  routes,
+};
+
 export default DeepLinking;
