@@ -10,11 +10,17 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
   },
-  "transformIgnorePatterns": [
-    "node_modules/(?!react-native|my-project|react-native-button)"
-  ],
   "author": "Luis Flores <me@luisflores.mx> (http://luisflores.mx/)",
   "license": "MIT",
   "dependencies": {

@@ -9,7 +9,7 @@ const fetchQueries = (expression) => {
 
   let match;
   while (match = regex.exec(expression)) {
-    if (match && match[0]) {
+    if (match && match[0] && match[1]) {
       queries.push(match[0]);
     }
   }
@@ -26,7 +26,7 @@ const execRegex = (queries, expression, path) => {
   const queryRegex = new RegExp(regexExpression, 'g');
   const match = queryRegex.exec(path);
 
-  if (match) {
+  if (match && !match[1].includes('/')) {
     let results = { path: match[0] }
     queries.forEach((query, index) => {
       const id = query.substring(1);
@@ -34,16 +34,6 @@ const execRegex = (queries, expression, path) => {
     });
 
     return results;
-  }
-
-  return false;
-};
-
-const evaluateRoute = (expression, path) => {
-  const queries = fetchQueries(expression);
-
-  if (queries.length) {
-    return execRegex(queries, expression, path);
   }
 
   return false;
@@ -64,7 +54,10 @@ const evaluateExpression = (expression, path, scheme) => {
   }
 
   if (typeof expression === 'string' && expression.includes(':')) {
-    return evaluateRoute(expression, path);
+    const queries = fetchQueries(expression);
+    if (queries.length) {
+      return execRegex(queries, expression, path);
+    }
   }
 
   return false;
@@ -102,10 +95,12 @@ const addScheme = (scheme) => {
 };
 
 const handleUrl = ({ url }) => {
-  Linking.canOpenURL(url).then((supported) => {
+  return Linking.canOpenURL(url).then((supported) => {
     if (supported) {
-      evaluateUrl(url);
+      evaluateUrl(url); 
     }
+
+    return Promise.resolve(supported);
   });
 };
 

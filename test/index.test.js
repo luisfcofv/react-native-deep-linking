@@ -1,5 +1,7 @@
 import DeepLinking, { evaluateUrl } from '../src';
 
+DeepLinking.addScheme('domain://');
+
 describe('DeepLinking', () => {
   const articleRoute = {
     expression: 'domain://article',
@@ -10,14 +12,16 @@ describe('DeepLinking', () => {
     expression: 'domain://music',
     callback: () => {},
   };
-  
+
+  beforeEach(() => {
+    expect(DeepLinking.routes).toEqual([]);
+  });
+
   afterEach(() => {
     DeepLinking.resetRoutes();
   });
 
   test('addRoute', () => {
-    expect(DeepLinking.routes).toEqual([]);
-
     DeepLinking.addRoute(articleRoute.expression, articleRoute.callback);
     expect(DeepLinking.routes).toEqual([articleRoute]);
 
@@ -26,8 +30,6 @@ describe('DeepLinking', () => {
   });
 
   test('removeRoute', () => {
-    expect(DeepLinking.routes).toEqual([]);
-
     DeepLinking.addRoute(articleRoute.expression, articleRoute.callback);
     DeepLinking.addRoute(musicRoute.expression, musicRoute.callback);
     expect(DeepLinking.routes).toEqual([articleRoute, musicRoute]);
@@ -37,8 +39,6 @@ describe('DeepLinking', () => {
   });
 
   test('resetRoutes', () => {
-    expect(DeepLinking.routes).toEqual([]);
-
     DeepLinking.addRoute(articleRoute.expression, articleRoute.callback);
     DeepLinking.addRoute(musicRoute.expression, musicRoute.callback);
     expect(DeepLinking.routes).toEqual([articleRoute, musicRoute]);
@@ -46,11 +46,31 @@ describe('DeepLinking', () => {
     DeepLinking.resetRoutes();
     expect(DeepLinking.routes).toEqual([]);
   });
+
+  test('handleUrl supported url', () => {
+    jest.resetModules();
+    jest.mock('Linking', () => ({
+      canOpenURL: jest.fn(() => Promise.resolve(true)),
+    }));
+
+    return DeepLinking.handleUrl({ url: '' }).then(supported => {
+      expect(supported).toEqual(true);
+    });
+  });
+
+  test('handleUrl unsupported url', () => {
+    jest.resetModules();
+    jest.mock('Linking', () => ({
+      canOpenURL: jest.fn(() => Promise.resolve(false)),
+    }));
+
+    return DeepLinking.handleUrl({ url: '' }).then(supported => {
+      expect(supported).toEqual(false);
+    });
+  });
 });
 
 describe('Routes', () => {
-  DeepLinking.addScheme('domain://');
-
   afterEach(() => {
     DeepLinking.resetRoutes();
   });
@@ -156,5 +176,56 @@ describe('Routes', () => {
 
     evaluateUrl('domain://music/123/details');
     expect(urlEvaluated).toEqual(true);
+  });
+
+  test('invalid scheme something://music', () => {
+    let urlEvaluated = false;
+    DeepLinking.addRoute('/music', () => {
+      urlEvaluated = true;
+    });
+
+    evaluateUrl('something://music');
+    expect(urlEvaluated).toEqual(false);
+  });
+
+  test('invalid route', () => {
+    let urlEvaluated = false;
+    DeepLinking.addRoute('music', () => {
+      urlEvaluated = true;
+    });
+
+    evaluateUrl('domain://music');
+    expect(urlEvaluated).toEqual(false);
+  });
+
+  test('invalid path', () => {
+    let urlEvaluated = false;
+    DeepLinking.addRoute('/music/:id', (response) => {
+      urlEvaluated = true;
+    });
+
+    evaluateUrl('domain://music/12/details');
+    expect(urlEvaluated).toEqual(false);
+  });
+
+  test('invalid query', () => {
+    let urlEvaluated = false;
+    DeepLinking.addRoute('/music/:', () => {
+      urlEvaluated = true;
+    });
+
+    evaluateUrl('domain://music/1');
+    expect(urlEvaluated).toEqual(false);
+  });
+
+  test('invalid path with regex domain://music/(.*)\/details/', () => {
+    let urlEvaluated = false;
+    const regex = /\/music\/(.*)\/details/g;
+    DeepLinking.addRoute(regex, (wtf) => {
+      urlEvaluated = true;
+    });
+
+    evaluateUrl('domain://videos/123/details');
+    expect(urlEvaluated).toEqual(false);
   });
 });
