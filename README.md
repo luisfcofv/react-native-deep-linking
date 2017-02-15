@@ -1,6 +1,4 @@
-<img title="react-native-deep-linking" src="logo.png" width="70%">
-
-React Native route-matching library to handle deep links.
+<img title="react-native-deep-linking" src="logo.png" height="200">
 
 [![Travis](https://img.shields.io/travis/luisfcofv/react-native-deep-linking.svg)](https://travis-ci.org/luisfcofv/react-native-deep-linking)
 [![Codecov](https://img.shields.io/codecov/c/github/luisfcofv/react-native-deep-linking.svg)](https://codecov.io/github/luisfcofv/react-native-deep-linking)
@@ -8,6 +6,8 @@ React Native route-matching library to handle deep links.
 [![npm](https://img.shields.io/npm/dm/react-native-deep-linking.svg)](http://npm-stat.com/charts.html?package=react-native-deep-linking&from=2017-02-13)
 [![npm](https://img.shields.io/npm/l/react-native-deep-linking.svg)](LICENSE)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
+React Native route-matching library to handle deep links.
 
 ## Installation
 
