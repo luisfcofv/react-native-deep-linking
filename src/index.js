@@ -1,21 +1,23 @@
 import { Linking } from 'react-native';
 
 const schemes = [];
-let routes = [];
+const routes = [];
 
 const fetchQueries = (expression) => {
-  const regex = /:([^\/]*)/g;
+  const regex = /:([^/]*)/g;
   const queries = [];
 
-  let match;
-  while (match = regex.exec(expression)) {
+  let match = regex.exec(expression);
+  while (match) {
     if (match && match[0] && match[1]) {
       queries.push(match[0]);
     }
+
+    match = regex.exec(expression);
   }
 
   return queries;
-}
+};
 
 const execRegex = (queries, expression, path) => {
   let regexExpression = expression;
@@ -27,10 +29,10 @@ const execRegex = (queries, expression, path) => {
   const match = queryRegex.exec(path);
 
   if (match && !match[1].includes('/')) {
-    let results = { path: match[0] }
+    let results = { path: match[0] };
     queries.forEach((query, index) => {
       const id = query.substring(1);
-      results = { [id]: match[index + 1], ...results }
+      results = { [id]: match[index + 1], ...results };
     });
 
     return results;
@@ -94,15 +96,15 @@ const addScheme = (scheme) => {
   schemes.push(scheme);
 };
 
-const handleUrl = ({ url }) => {
-  return Linking.canOpenURL(url).then((supported) => {
+const handleUrl = ({ url }) => (
+  Linking.canOpenURL(url).then((supported) => {
     if (supported) {
-      evaluateUrl(url); 
+      evaluateUrl(url);
     }
 
     return Promise.resolve(supported);
-  });
-};
+  })
+);
 
 const DeepLinking = {
   addRoute,

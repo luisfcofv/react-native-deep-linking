@@ -53,7 +53,7 @@ describe('DeepLinking', () => {
       canOpenURL: jest.fn(() => Promise.resolve(true)),
     }));
 
-    return DeepLinking.handleUrl({ url: '' }).then(supported => {
+    return DeepLinking.handleUrl({ url: '' }).then((supported) => {
       expect(supported).toEqual(true);
     });
   });
@@ -64,7 +64,7 @@ describe('DeepLinking', () => {
       canOpenURL: jest.fn(() => Promise.resolve(false)),
     }));
 
-    return DeepLinking.handleUrl({ url: '' }).then(supported => {
+    return DeepLinking.handleUrl({ url: '' }).then((supported) => {
       expect(supported).toEqual(false);
     });
   });
@@ -77,7 +77,7 @@ describe('Routes', () => {
 
   test('domain://music', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/music', result => {
+    DeepLinking.addRoute('/music', (result) => {
       const { path, scheme } = result;
       expect(path).toEqual('/music');
       expect(scheme).toEqual('domain://');
@@ -90,7 +90,7 @@ describe('Routes', () => {
 
   test('domain://music/:id', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/music/:id', result => {
+    DeepLinking.addRoute('/music/:id', (result) => {
       const { path, scheme, id } = result;
       expect(path).toEqual('/music/123');
       expect(scheme).toEqual('domain://');
@@ -104,7 +104,7 @@ describe('Routes', () => {
 
   test('domain://music/:name/', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/music/:name/', result => {
+    DeepLinking.addRoute('/music/:name/', (result) => {
       const { path, scheme, name } = result;
       expect(path).toEqual('/music/abcd/');
       expect(scheme).toEqual('domain://');
@@ -118,7 +118,7 @@ describe('Routes', () => {
 
   test('domain://music/:name/details/:id', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/music/:name/details/:id', result => {
+    DeepLinking.addRoute('/music/:name/details/:id', (result) => {
       const { path, scheme, name, id } = result;
       expect(path).toEqual('/music/test/details/12');
       expect(scheme).toEqual('domain://');
@@ -133,7 +133,7 @@ describe('Routes', () => {
 
   test('domain://:id', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/:id', result => {
+    DeepLinking.addRoute('/:id', (result) => {
       const { path, scheme, id } = result;
       expect(path).toEqual('/100');
       expect(scheme).toEqual('domain://');
@@ -147,7 +147,7 @@ describe('Routes', () => {
 
   test('domain://:id1/:id2/:id3/:id4', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/:id1/:id2/:id3/:id4', result => {
+    DeepLinking.addRoute('/:id1/:id2/:id3/:id4', (result) => {
       const { path, scheme, id1, id2, id3, id4 } = result;
       expect(path).toEqual('/1/2/3/4');
       expect(scheme).toEqual('domain://');
@@ -162,10 +162,10 @@ describe('Routes', () => {
     expect(urlEvaluated).toEqual(true);
   });
 
-  test('regex domain://music/(.*)\/details/', () => {
+  test('regex domain://music/(.*)/details/', () => {
     let urlEvaluated = false;
     const regex = /\/music\/(.*)\/details/g;
-    DeepLinking.addRoute(regex, result => {
+    DeepLinking.addRoute(regex, (result) => {
       const { path, scheme, match } = result;
       expect(path).toEqual('/music/123/details');
       expect(scheme).toEqual('domain://');
@@ -200,7 +200,7 @@ describe('Routes', () => {
 
   test('invalid path', () => {
     let urlEvaluated = false;
-    DeepLinking.addRoute('/music/:id', (response) => {
+    DeepLinking.addRoute('/music/:id', () => {
       urlEvaluated = true;
     });
 
@@ -218,10 +218,10 @@ describe('Routes', () => {
     expect(urlEvaluated).toEqual(false);
   });
 
-  test('invalid path with regex domain://music/(.*)\/details/', () => {
+  test('invalid path with regex domain://music/(.*)/details/', () => {
     let urlEvaluated = false;
     const regex = /\/music\/(.*)\/details/g;
-    DeepLinking.addRoute(regex, (wtf) => {
+    DeepLinking.addRoute(regex, () => {
       urlEvaluated = true;
     });
 

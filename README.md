@@ -18,6 +18,10 @@ npm install react-native-deep-linking
 
 ## Usage
 
+## Contributing
+
+Read up on our guidelines for [contributing](CONTRIBUTING.md).
+
 ## License
 
 react-native-deep-linking is licensed under the [MIT License](LICENSE).
