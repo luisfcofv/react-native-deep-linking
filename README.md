@@ -1,5 +1,6 @@
-# react-native-deep-linking
-React Native URL routing library
+<img title="react-native-deep-linking" src="logo.png" width="70%">
+
+React Native route-matching library to handle deep links.
 
 [![Travis](https://img.shields.io/travis/luisfcofv/react-native-deep-linking.svg)](https://travis-ci.org/luisfcofv/react-native-deep-linking)
 [![Codecov](https://img.shields.io/codecov/c/github/luisfcofv/react-native-deep-linking.svg)](https://codecov.io/github/luisfcofv/react-native-deep-linking)
