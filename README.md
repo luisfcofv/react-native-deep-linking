@@ -13,6 +13,8 @@
 
 ## Overview
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/luisfcofv/react-native-deep-linking.svg)](https://greenkeeper.io/)
+
 React Native route-matching library to handle deep links.
 
 ## Installation
