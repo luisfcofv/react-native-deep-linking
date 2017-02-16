@@ -126,7 +126,7 @@ DeepLinking.addRoute('/profile/:id', ({ scheme, path, id }) => {
 
 Example `facebook://profile/12/posts/403`
 ```javascript
-// The following route does NOT match the URL.
+// The following route matches the URL.
 DeepLinking.addRoute('profile/:id/posts/:postId', ({ scheme, path, id, postId }) => {
   console.log(scheme); // `facebook://`
   console.log(path); // `/profile/12/posts/403`
