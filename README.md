@@ -107,7 +107,7 @@ Example `facebook://profile`
 // The following route matches the URL.
 DeepLinking.addRoute('/profile', ({ scheme, path }) => {
   console.log(scheme); // `facebook://`
-  console.log(path); // `/profile`
+  console.log(path);   // `/profile`
 });
 
 // The following route does NOT match the URL.
@@ -119,18 +119,18 @@ Example `facebook://profile/33138223345`
 // The following route matches the URL.
 DeepLinking.addRoute('/profile/:id', ({ scheme, path, id }) => {
   console.log(scheme); // `facebook://`
-  console.log(path); // `/profile/33138223345`
-  console.log(id); // `33138223345`
+  console.log(path);   // `/profile/33138223345`
+  console.log(id);     // `33138223345`
 });
 ```
 
 Example `facebook://profile/12/posts/403`
 ```javascript
-// The following route matches the URL.
+// The following route does NOT match the URL.
 DeepLinking.addRoute('profile/:id/posts/:postId', ({ scheme, path, id, postId }) => {
   console.log(scheme); // `facebook://`
-  console.log(path); // `/profile/12/posts/403`
-  console.log(id); // `12`
+  console.log(path);   // `/profile/12/posts/403`
+  console.log(id);     // `12`
   console.log(postId); // `403`
 });
 ```
@@ -144,8 +144,8 @@ Example `facebook://profile/123/details`
 const regex = /\/profile\/(.*)\/details/g;
 DeepLinking.addRoute(regex, ({ scheme, path, match }) => {
   console.log(scheme); // `facebook://`
-  console.log(path); // `/profile/33138223345/details`
-  console.log(match); // `[ "/profile/123/details", "123" ]`
+  console.log(path);   // `/profile/33138223345/details`
+  console.log(match);  // `[ "/profile/123/details", "123" ]`
 });
 ```
 
