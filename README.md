@@ -24,28 +24,61 @@ This package is distributed via npm:
 npm install react-native-deep-linking
 ```
 
+### Add deep link support to your app
+
+#### For iOS:
+
+#### 1. Make sure you have a URL scheme registered for your app in your Info.plist
+![Scheme support](ios-schemes.png)
+
+
+#### 2. Add this to your AppDelegate.m
+
+```objective-c
+#import "RCTLinkingManager.h"
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
+}
+
+// Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
+}
+```
+
+#### For Android:
+https://developer.android.com/training/app-indexing/deep-linking.html
+
+More info: https://facebook.github.io/react-native/docs/linking.html
+
 ## Usage
 
-#### 1. Add deep link support to your app following this [guide](https://facebook.github.io/react-native/docs/linking.html).
-
-#### 2. Import DeepLinking
+#### 1. Import DeepLinking
 ```javascript
 import DeepLinking from 'react-native-deep-linking';
 ```
 
-#### 3. Register schemes
+#### 2. Register schemes
 ```javascript
 DeepLinking.addScheme('example://');
 ```
 
-#### 4. Add event listener
+#### 3. Add event listener
 ```javascript
 import { Linking } from 'react-native';
 ...
 Linking.addEventListener('url', DeepLinking.handleUrl);
 ```
 
-#### 5. Register routes
+#### 4. Register routes
 ```javascript
 DeepLinking.addRoute('/test/:id', (response) => {
   // example://test/23
@@ -53,37 +86,55 @@ DeepLinking.addRoute('/test/:id', (response) => {
 });
 ```
 
+#### 5. Open external url (Optional)
+If your app was launched from an external url registered to your app you can access and handle it from any component you want with
+```javascript
+componentDidMount() {
+  var url = Linking.getInitialURL().then((url) => {
+    if (url) {
+      Linking.openURL(url);
+    }
+  }).catch(err => console.error('An error occurred', err));
+}
+```
+
 ## Example
 
 ```javascript
 import React, { Component } from 'react';
-import { AppRegistry, View, Linking } from 'react-native';
+import { Button, Linking, StyleSheet, Text, View } from 'react-native';
 
 import DeepLinking from 'react-native-deep-linking';
 
 export default class App extends Component {
+  state = {
+    response: {},
+  };
+
   componentDidMount() {
     DeepLinking.addScheme('example://');
     Linking.addEventListener('url', DeepLinking.handleUrl);
 
-    DeepLinking.addRoute('/test', () => {
+    DeepLinking.addRoute('/test', (response) => {
       // example://test
-      console.log('It matched');
+      this.setState({ response });
     });
 
-    DeepLinking.addRoute('/test/:id', ({ id }) => {
+    DeepLinking.addRoute('/test/:id', (response) => {
       // example://test/23
-      console.log(id); // `23`
+      this.setState({ response });
     });
 
-    DeepLinking.addRoute('/test/:session/details', ({ session }) => {
+    DeepLinking.addRoute('/test/:id/details', (response) => {
       // example://test/100/details
-      console.log(session); // `100`
+      this.setState({ response });
     });
-  
-    Linking.openURL('example://test');
-    Linking.openURL('example://test/23');
-    Linking.openURL('example://test/100/details');
+
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
   }
 
   componentWillUnmount() {
@@ -91,11 +142,43 @@ export default class App extends Component {
   }
 
   render() {
-    return <View />;
+    return (
+      <View style={styles.container}>
+        <View style={styles.container}>
+          <Button
+            onPress={() => Linking.openURL('example://test')}
+            title="Open example://test"
+          />
+          <Button
+            onPress={() => Linking.openURL('example://test/23')}
+            title="Open example://test/23"
+          />
+          <Button
+            onPress={() => Linking.openURL('example://test/100/details')}
+            title="Open example://test/100/details"
+          />
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.text}>{this.state.response.scheme ? `Url scheme: ${this.state.response.scheme}` : ''}</Text>
+          <Text style={styles.text}>{this.state.response.path ? `Url path: ${this.state.response.path}` : ''}</Text>
+          <Text style={styles.text}>{this.state.response.id ? `Url id: ${this.state.response.id}` : ''}</Text>
+        </View>
+      </View>
+    );
   }
 }
 
-AppRegistry.registerComponent('example', () => App);
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 18,
+    margin: 10,
+  },
+});
 ```
 
 ## Routes
