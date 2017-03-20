@@ -1,5 +1,3 @@
-import { Linking } from 'react-native';
-
 const schemes = [];
 const routes = [];
 
@@ -65,7 +63,7 @@ const evaluateExpression = (expression, path, scheme) => {
   return false;
 };
 
-export const evaluateUrl = (url) => {
+const evaluateUrl = (url) => {
   schemes.forEach((scheme) => {
     if (url.startsWith(scheme)) {
       const path = url.substring(scheme.length - 1);
@@ -96,20 +94,10 @@ const addScheme = (scheme) => {
   schemes.push(scheme);
 };
 
-const handleUrl = ({ url }) => (
-  Linking.canOpenURL(url).then((supported) => {
-    if (supported) {
-      evaluateUrl(url);
-    }
-
-    return Promise.resolve(supported);
-  })
-);
-
 const DeepLinking = {
   addRoute,
   addScheme,
-  handleUrl,
+  evaluateUrl,
   removeRoute,
   resetRoutes,
   routes,

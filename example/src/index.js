@@ -10,7 +10,7 @@ export default class App extends Component {
 
   componentDidMount() {
     DeepLinking.addScheme('example://');
-    Linking.addEventListener('url', DeepLinking.handleUrl);
+    Linking.addEventListener('url', this.handleUrl);
 
     DeepLinking.addRoute('/test', (response) => {
       // example://test
@@ -35,7 +35,15 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
-    Linking.removeEventListener('url', DeepLinking.handleUrl);
+    Linking.removeEventListener('url', this.handleUrl);
+  }
+
+  handleUrl = ({ url }) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        DeepLinking.evaluateUrl(url);
+      }
+    });
   }
 
   render() {

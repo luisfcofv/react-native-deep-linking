@@ -1,4 +1,4 @@
-import DeepLinking, { evaluateUrl } from '../src';
+import DeepLinking from '../src';
 
 DeepLinking.addScheme('domain://');
 
@@ -46,28 +46,6 @@ describe('DeepLinking', () => {
     DeepLinking.resetRoutes();
     expect(DeepLinking.routes).toEqual([]);
   });
-
-  test('handleUrl supported url', () => {
-    jest.resetModules();
-    jest.mock('Linking', () => ({
-      canOpenURL: jest.fn(() => Promise.resolve(true)),
-    }));
-
-    return DeepLinking.handleUrl({ url: '' }).then((supported) => {
-      expect(supported).toEqual(true);
-    });
-  });
-
-  test('handleUrl unsupported url', () => {
-    jest.resetModules();
-    jest.mock('Linking', () => ({
-      canOpenURL: jest.fn(() => Promise.resolve(false)),
-    }));
-
-    return DeepLinking.handleUrl({ url: '' }).then((supported) => {
-      expect(supported).toEqual(false);
-    });
-  });
 });
 
 describe('Routes', () => {
@@ -84,7 +62,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music');
+    DeepLinking.evaluateUrl('domain://music');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -98,7 +76,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music/123');
+    DeepLinking.evaluateUrl('domain://music/123');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -112,7 +90,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music/abcd/');
+    DeepLinking.evaluateUrl('domain://music/abcd/');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -127,7 +105,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music/test/details/12');
+    DeepLinking.evaluateUrl('domain://music/test/details/12');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -141,7 +119,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://100');
+    DeepLinking.evaluateUrl('domain://100');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -158,7 +136,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://1/2/3/4');
+    DeepLinking.evaluateUrl('domain://1/2/3/4');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -174,7 +152,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music/123/details');
+    DeepLinking.evaluateUrl('domain://music/123/details');
     expect(urlEvaluated).toEqual(true);
   });
 
@@ -184,7 +162,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('something://music');
+    DeepLinking.evaluateUrl('something://music');
     expect(urlEvaluated).toEqual(false);
   });
 
@@ -194,7 +172,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music');
+    DeepLinking.evaluateUrl('domain://music');
     expect(urlEvaluated).toEqual(false);
   });
 
@@ -204,7 +182,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music/12/details');
+    DeepLinking.evaluateUrl('domain://music/12/details');
     expect(urlEvaluated).toEqual(false);
   });
 
@@ -214,7 +192,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://music/1');
+    DeepLinking.evaluateUrl('domain://music/1');
     expect(urlEvaluated).toEqual(false);
   });
 
@@ -225,7 +203,7 @@ describe('Routes', () => {
       urlEvaluated = true;
     });
 
-    evaluateUrl('domain://videos/123/details');
+    DeepLinking.evaluateUrl('domain://videos/123/details');
     expect(urlEvaluated).toEqual(false);
   });
 });

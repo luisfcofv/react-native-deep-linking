@@ -14,7 +14,6 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "jest": {
-    "preset": "react-native",
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
@@ -27,13 +26,10 @@
   },
   "author": "Luis Flores <me@luisflores.mx> (http://luisflores.mx/)",
   "license": "MIT",
-  "dependencies": {
-    "react": "^15.4.2",
-    "react-native": "^0.42.3"
-  },
   "devDependencies": {
     "babel-jest": "^19.0.0",
-    "babel-preset-react-native": "^1.9.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-stage-2": "^6.22.0",
     "codecov.io": "^0.1.6",
     "commitizen": "^2.9.5",
     "cz-conventional-changelog": "^2.0.0",
@@ -41,7 +37,7 @@
     "eslint-config-airbnb": "14.1.0",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "4.0.0",
-    "eslint-plugin-react": "6.10.2",
+    "eslint-plugin-react": "^6.10.2",
     "husky": "^0.13.1",
     "jest": "^19.0.0",
     "semantic-release": "^6.3.2"
