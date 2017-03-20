@@ -2144,13 +2144,10 @@ react-deep-force-update@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
 react-native-deep-linking@../:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-deep-linking/-/react-native-deep-linking-1.0.3.tgz#0ccacf143c5a0b2e3dbe03d769d10b69ed525fc8"
-  dependencies:
-    react "^15.4.2"
-    react-native "^0.42.3"
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-deep-linking/-/react-native-deep-linking-2.0.0.tgz#55b91a370bf1264ace32ced530429a21fcf0433c"
 
-react-native@0.42.3, react-native@^0.42.3:
+react-native@0.42.3:
   version "0.42.3"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.42.3.tgz#450c8a03a5e3e991a08a426f22776dd8feb80b26"
   dependencies:
@@ -2248,7 +2245,7 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@^15.4.2, react@~15.4.2:
+react@~15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:
