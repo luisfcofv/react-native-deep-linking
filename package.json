@@ -41,7 +41,7 @@
     "eslint-config-airbnb": "14.1.0",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "4.0.0",
-    "eslint-plugin-react": "6.10.1",
+    "eslint-plugin-react": "6.10.2",
     "husky": "^0.13.1",
     "jest": "^19.0.0",
     "semantic-release": "^6.3.2"
