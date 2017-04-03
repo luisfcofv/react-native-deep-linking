@@ -45,7 +45,9 @@ const evaluateExpression = (expression, path, scheme) => {
   }
 
   try {
-    const match = expression.exec(path);
+    const regex = expression;
+    const match = regex.exec(path);
+    regex.lastIndex = 0;
     if (match) {
       return { scheme, path, match };
     }
