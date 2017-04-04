@@ -66,17 +66,21 @@ const evaluateExpression = (expression, path, scheme) => {
 };
 
 const evaluateUrl = (url) => {
+  let solved = false;
   schemes.forEach((scheme) => {
     if (url.startsWith(scheme)) {
       const path = url.substring(scheme.length - 1);
       routes.forEach((route) => {
         const result = evaluateExpression(route.expression, path, scheme);
         if (result) {
+          solved = true;
           route.callback({ scheme, ...result });
         }
       });
     }
   });
+
+  return solved;
 };
 
 const addRoute = (expression, callback) => {
