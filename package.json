@@ -46,7 +46,7 @@
     "eslint-plugin-react": "^7.0.0",
     "husky": "^0.14.1",
     "jest": "^20.0.0",
-    "semantic-release": "^6.3.2"
+    "semantic-release": "^15.8.0"
   },
   "repository": {
     "type": "git",
