@@ -207,3 +207,11 @@ describe('Routes', () => {
     expect(urlEvaluated).toEqual(false);
   });
 });
+
+
+describe('Schemes', () => {
+  test('resetSchemes', () => {
+    DeepLinking.resetSchemes();
+    expect(DeepLinking.schemes).toEqual([]);
+  });
+});
