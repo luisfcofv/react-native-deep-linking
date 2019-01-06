@@ -100,13 +100,19 @@ const addScheme = (scheme) => {
   schemes.push(scheme);
 };
 
+const resetSchemes = () => {
+  schemes.splice(0, schemes.length);
+};
+
 const DeepLinking = {
   addRoute,
   addScheme,
   evaluateUrl,
   removeRoute,
+  resetSchemes,
   resetRoutes,
   routes,
+  schemes,
 };
 
 export default DeepLinking;
