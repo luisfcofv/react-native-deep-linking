@@ -39,7 +39,7 @@
     "codecov.io": "^0.1.6",
     "commitizen": "^2.9.5",
     "cz-conventional-changelog": "^2.0.0",
-    "eslint": "^3.19.0",
+    "eslint": "^5.15.3",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.6.1",
     "eslint-plugin-jsx-a11y": "^5.0.1",
